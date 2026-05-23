@@ -1,0 +1,63 @@
+{
+    "incident_id": "INC-2024-001",
+    "title": "Authentication Service Outage - DB Connection Pool Exhaustion",
+    "date": "2024-06-15",
+    "duration_minutes": 45,
+    "severity": "critical",
+    "impacted_services": [
+      "auth-service",
+      "user-service",
+      "api-gateway"
+    ],
+    "root_cause": "Database connection pool exhausted due to connection leak in auth-service v2.3.1. A code change introduced in the previous deployment failed to close DB connections in the error handling path of the /validate-token endpoint. When token validation errors occurred, the connection was not returned to the pool, causing gradual exhaustion over ~30 minutes.",
+    "resolution": "Rolled back auth-service to v2.3.0. Implemented connection pool monitoring with Prometheus. Added connection leak detection test in CI/CD pipeline. Patched the error handler to use try/finally for connection release.",
+    "timeline": [
+      {
+        "timestamp": "2024-06-15T09:00:00Z",
+        "event": "auth-service v2.3.1 deployed to production (4 replicas)"
+      },
+      {
+        "timestamp": "2024-06-15T09:15:00Z",
+        "event": "Connection pool utilization begins climbing above normal baseline"
+      },
+      {
+        "timestamp": "2024-06-15T09:30:00Z",
+        "event": "First WARN: pool utilization at 85%"
+      },
+      {
+        "timestamp": "2024-06-15T09:35:00Z",
+        "event": "First ERROR: connection pool exhausted, requests failing"
+      },
+      {
+        "timestamp": "2024-06-15T09:37:00Z",
+        "event": "api-gateway circuit breaker opens for auth-service"
+      },
+      {
+        "timestamp": "2024-06-15T09:38:00Z",
+        "event": "user-service reports cascading auth failures"
+      },
+      {
+        "timestamp": "2024-06-15T09:40:00Z",
+        "event": "On-call engineer initiates rollback to v2.3.0"
+      },
+      {
+        "timestamp": "2024-06-15T09:45:00Z",
+        "event": "Rollback complete, services recovering"
+      }
+    ],
+    "lessons_learned": [
+      "Add connection pool metrics to Grafana dashboards (pool utilization, wait time, leaked connections)",
+      "Implement connection leak detection tests in CI/CD pipeline",
+      "Set up alerts for pool utilization > 80%",
+      "All database code must use try/finally or context managers for connection release",
+      "Add synthetic load test that simulates error conditions to catch leak patterns"
+    ],
+    "tags": [
+      "database",
+      "connection-pool",
+      "auth",
+      "deployment",
+      "connection-leak"
+    ]
+  }
+  

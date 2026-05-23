@@ -1,0 +1,63 @@
+{
+"incident_id": "INC-2024-002",
+"title": "Payment Service Latency Spike - Memory Leak in TransactionCache",
+"date": "2024-08-22",
+"duration_minutes": 65,
+"severity": "critical",
+"impacted_services": [
+  "payment-service",
+  "load-balancer",
+  "order-service"
+],
+"root_cause": "Memory leak in payment-service v3.1.0 caused by an unbounded in-memory TransactionCache. The cache stored every processed transaction without TTL or max-size eviction. Under production load (~200 txn/min), the cache grew linearly until the JVM heap was exhausted, triggering GC storms and eventual OOMKill. The bug was in TransactionCache.put() which lacked eviction logic.",
+"resolution": "Rolled back payment-service to v3.0.9 (stable). Patched v3.1.1 with a bounded Caffeine cache (maxSize=10000, TTL=5min). Added JVM flag -XX:+HeapDumpOnOutOfMemoryError for future debugging. Added memory growth rate alerting.",
+"timeline": [
+  {
+    "timestamp": "2024-08-22T09:00:00Z",
+    "event": "payment-service v3.1.0 deployed to production"
+  },
+  {
+    "timestamp": "2024-08-22T09:30:00Z",
+    "event": "Memory usage crosses 75% \u2014 first MEM-WARN alert"
+  },
+  {
+    "timestamp": "2024-08-22T09:45:00Z",
+    "event": "GC pauses exceeding 500ms \u2014 latency spikes begin"
+  },
+  {
+    "timestamp": "2024-08-22T09:50:00Z",
+    "event": "Memory at 91% \u2014 GC overhead consuming 45% CPU"
+  },
+  {
+    "timestamp": "2024-08-22T09:53:00Z",
+    "event": "First OOMKill \u2014 pod payment-svc-7b4f8d-x2k restarted"
+  },
+  {
+    "timestamp": "2024-08-22T10:00:00Z",
+    "event": "3 of 4 pods OOMKilled \u2014 service effectively down"
+  },
+  {
+    "timestamp": "2024-08-22T10:00:30Z",
+    "event": "Rollback initiated to v3.0.9"
+  },
+  {
+    "timestamp": "2024-08-22T10:05:00Z",
+    "event": "Rollback complete \u2014 service recovered, memory stable"
+  }
+],
+"lessons_learned": [
+  "All in-memory caches must have max-size and TTL constraints",
+  "Add heap usage growth rate as a monitored metric with alerting",
+  "Enable -XX:+HeapDumpOnOutOfMemoryError in all JVM services",
+  "Include memory profiling step in CI/CD load testing",
+  "Code review checklist: verify cache eviction policy for any new cache"
+],
+"tags": [
+  "memory-leak",
+  "oom",
+  "payment",
+  "deployment",
+  "cache",
+  "gc"
+]
+}

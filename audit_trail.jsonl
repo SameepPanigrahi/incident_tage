@@ -1,0 +1,4 @@
+{"event": "query_received", "incident_id": "INC-2026-044", "query_length": 3679, "user_id": "system"}
+{"event": "analysis_complete", "incident_id": "INC-2026-044", "root_causes_found": 3, "processing_time_seconds": 53.86}
+{"event": "query_received", "incident_id": "INC-2026-042", "query_length": 4196, "user_id": "system"}
+{"event": "analysis_complete", "incident_id": "INC-2026-042", "root_causes_found": 3, "processing_time_seconds": 83.62}

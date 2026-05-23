@@ -1,0 +1,77 @@
+{
+    "version": "1.0",
+    "description": "Golden dataset for RAGAS evaluation of the Incident RCA Assistant",
+    "questions": [
+      {
+        "id": "q1",
+        "category": "root_cause",
+        "question": "What causes a DB connection pool exhaustion in the auth-service?",
+        "ground_truth": "DB connection pool exhaustion in auth-service is caused by connection leaks where connections are not properly closed in error handling paths, particularly in the /validate-token endpoint. When errors occur, the connection is not returned to the pool, causing gradual pool exhaustion.",
+        "ground_truth_context": "database_troubleshooting.md, incident_001.json"
+      },
+      {
+        "id": "q2",
+        "category": "remediation",
+        "question": "How do I fix a connection pool exhaustion immediately?",
+        "ground_truth": "Immediate fixes include: 1) Kill idle connections older than 5 minutes using pg_terminate_backend, 2) Temporarily increase max_connections, 3) Restart affected application pods to reset connection state. Long-term: implement PgBouncer, add connection leak detection, set pool configuration with max_idle_time.",
+        "ground_truth_context": "database_troubleshooting.md"
+      },
+      {
+        "id": "q3",
+        "category": "root_cause",
+        "question": "What are the symptoms of a memory leak in a Java service?",
+        "ground_truth": "Symptoms include: steady heap/RSS growth over time, increasing GC frequency and pause duration, GC overhead consuming more than 25% CPU, and eventual OOMKill events. Key metrics to watch are heap usage >75% of limit, GC pauses >500ms, and RSS growth rate >10MB/hour.",
+        "ground_truth_context": "memory_leak_diagnosis.md"
+      },
+      {
+        "id": "q4",
+        "category": "remediation",
+        "question": "How do I roll back a Kubernetes deployment?",
+        "ground_truth": "Use kubectl rollout undo deployment/<service-name> -n production to rollback to the previous version. To rollback to a specific revision, add --to-revision=<N>. Verify with kubectl rollout status and kubectl get pods. Always check deployment history first with kubectl rollout history.",
+        "ground_truth_context": "deployment_rollback_sop.md"
+      },
+      {
+        "id": "q5",
+        "category": "correlation",
+        "question": "How does a timeout in inventory-service cascade to the API gateway?",
+        "ground_truth": "Inventory-service slowdown causes order-service timeouts as it depends on inventory checks. Order-service exhausts retries and begins returning 504s. The api-gateway thread pool fills up waiting for order-service responses, and when it reaches capacity, the gateway becomes unresponsive, returning 504 Gateway Timeout for all requests.",
+        "ground_truth_context": "timeout_cascade_prevention.md, incident_003.json"
+      },
+      {
+        "id": "q6",
+        "category": "remediation",
+        "question": "What is the recommended circuit breaker configuration?",
+        "ground_truth": "Recommended configuration: sliding window size of 10, failure rate threshold of 50%, wait duration in open state of 30 seconds, 3 permitted calls in half-open state, slow call rate threshold of 80%, and slow call duration threshold of 2 seconds. Implement using Resilience4j for Java or pybreaker for Python.",
+        "ground_truth_context": "timeout_cascade_prevention.md"
+      },
+      {
+        "id": "q7",
+        "category": "root_cause",
+        "question": "What caused the payment service OOM kills in August 2024?",
+        "ground_truth": "The payment-service v3.1.0 had an unbounded in-memory TransactionCache that stored every processed transaction without TTL or max-size eviction. Under production load of ~200 transactions per minute, the cache grew linearly until the JVM heap was exhausted, triggering GC storms and OOMKill events.",
+        "ground_truth_context": "incident_002.json"
+      },
+      {
+        "id": "q8",
+        "category": "summarization",
+        "question": "Summarize the cascading timeout incident from November 2024.",
+        "ground_truth": "A missing index on the sku column of the stock table caused full table scans in inventory-service during a flash sale. Query latency increased from 15ms to 2400ms+, causing cascading timeouts through order-service and api-gateway. The gateway thread pool was exhausted making it unresponsive. A DBA applied an emergency index which resolved the issue. 340 orders were affected over a 25-minute incident.",
+        "ground_truth_context": "incident_003.json"
+      },
+      {
+        "id": "q9",
+        "category": "remediation",
+        "question": "What timeout tuning strategy should I follow for microservices?",
+        "ground_truth": "Follow the golden rule: downstream timeout must be shorter than upstream timeout. For example: API Gateway 30s > Order Service 10s > Inventory Service 3s > Database 1s. Connection timeout should be 1-3 seconds, read/response timeout 3-10 seconds depending on operation, and total request timeout should account for retries.",
+        "ground_truth_context": "timeout_cascade_prevention.md"
+      },
+      {
+        "id": "q10",
+        "category": "root_cause",
+        "question": "What are common causes of memory leaks in production services?",
+        "ground_truth": "Common causes include: 1) Unclosed connections (DB, HTTP, file handles not closed in error paths), 2) Unbounded caches without TTL or max-size eviction, 3) Circular references preventing garbage collection, 4) Large object retention, 5) Event listener leaks (registering without deregistering), 6) Static collections that accumulate items without cleanup.",
+        "ground_truth_context": "memory_leak_diagnosis.md"
+      }
+    ]
+  }
+  

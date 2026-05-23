@@ -1,0 +1,65 @@
+{
+"incident_id": "INC-2024-003",
+"title": "Cascading Timeout in Order Pipeline - Missing Database Index",
+"date": "2024-11-03",
+"duration_minutes": 25,
+"severity": "high",
+"impacted_services": [
+  "inventory-service",
+  "order-service",
+  "api-gateway",
+  "notification-service"
+],
+"root_cause": "A missing index on the `sku` column of the `stock` table in the inventory database caused full table scans when processing inventory check queries. As order volume increased during a flash sale, query latency spiked from 15ms to 2400ms+, triggering cascading timeouts: inventory-service timeouts caused order-service to exhaust retries, which saturated the api-gateway thread pool, ultimately making the gateway unresponsive.",
+"resolution": "DBA applied emergency index: CREATE INDEX idx_stock_sku ON stock(sku). Query latency dropped to 25ms within 3 minutes. Circuit breakers recovered automatically. 340 orders were affected and reprocessed after recovery.",
+"timeline": [
+  {
+    "timestamp": "2024-11-03T16:05:00Z",
+    "event": "inventory-service query latency increases to 180ms (baseline: 15ms)"
+  },
+  {
+    "timestamp": "2024-11-03T16:07:00Z",
+    "event": "First query timeouts in inventory-service (3000ms deadline)"
+  },
+  {
+    "timestamp": "2024-11-03T16:09:00Z",
+    "event": "order-service reports failed inventory checks, orders failing"
+  },
+  {
+    "timestamp": "2024-11-03T16:11:30Z",
+    "event": "api-gateway circuit breaker opens for order-service"
+  },
+  {
+    "timestamp": "2024-11-03T16:13:30Z",
+    "event": "api-gateway thread pool exhausted \u2014 gateway unresponsive"
+  },
+  {
+    "timestamp": "2024-11-03T16:15:00Z",
+    "event": "DBA applies emergency index on stock.sku column"
+  },
+  {
+    "timestamp": "2024-11-03T16:18:00Z",
+    "event": "Query latency normalizes, services begin recovering"
+  },
+  {
+    "timestamp": "2024-11-03T16:23:00Z",
+    "event": "All services fully recovered"
+  }
+],
+"lessons_learned": [
+  "Run EXPLAIN ANALYZE on all queries in staging before production deployment",
+  "Implement circuit breakers on all inter-service calls",
+  "Configure downstream timeout < upstream timeout (timeout hierarchy)",
+  "Add database query performance testing to CI/CD pipeline",
+  "Monitor seq_scan vs idx_scan ratio in pg_stat_user_tables",
+  "Implement bulkhead pattern to isolate critical vs non-critical dependencies"
+],
+"tags": [
+  "timeout",
+  "cascading-failure",
+  "database",
+  "missing-index",
+  "circuit-breaker",
+  "thread-pool"
+]
+}
