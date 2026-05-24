@@ -1,0 +1,86 @@
+{
+  "summary": {
+    "total_pass": 44,
+    "total_checks": 48,
+    "overall_rate": 0.917,
+    "scenarios": 3,
+    "timestamp": "2026-05-24T15:52:50.981470"
+  },
+  "details": [
+    {
+      "name": "Auth Service Outage \u2014 DB Connection Pool Exhaustion",
+      "incident_id": "EVAL-E2E-001",
+      "checks": {
+        "services_count": true,
+        "services_must_include": true,
+        "root_cause_count": true,
+        "root_cause_category": true,
+        "root_cause_has_evidence": true,
+        "root_cause_has_reasoning": true,
+        "root_cause_keywords": true,
+        "severity_match": true,
+        "remediation_count": true,
+        "has_immediate_step": true,
+        "priority_ordering": true,
+        "has_source_citation": true,
+        "remediation_keywords": true,
+        "anomaly_count": true,
+        "scores_valid": true,
+        "processing_time": false
+      },
+      "scenario_pass": 15,
+      "scenario_total": 16,
+      "processing_time": 94.4
+    },
+    {
+      "name": "Payment Service \u2014 Memory Leak After Deployment",
+      "incident_id": "EVAL-E2E-002",
+      "checks": {
+        "services_count": true,
+        "services_must_include": true,
+        "root_cause_count": true,
+        "root_cause_category": true,
+        "root_cause_has_evidence": true,
+        "root_cause_has_reasoning": true,
+        "root_cause_keywords": true,
+        "severity_match": true,
+        "remediation_count": true,
+        "has_immediate_step": true,
+        "priority_ordering": true,
+        "has_source_citation": true,
+        "remediation_keywords": true,
+        "anomaly_count": true,
+        "scores_valid": true,
+        "processing_time": false
+      },
+      "scenario_pass": 15,
+      "scenario_total": 16,
+      "processing_time": 80.6
+    },
+    {
+      "name": "API Gateway \u2014 Cascading Timeout from Missing Index",
+      "incident_id": "EVAL-E2E-003",
+      "checks": {
+        "services_count": true,
+        "services_must_include": true,
+        "root_cause_count": true,
+        "root_cause_category": true,
+        "root_cause_has_evidence": true,
+        "root_cause_has_reasoning": true,
+        "root_cause_keywords": true,
+        "severity_match": false,
+        "remediation_count": true,
+        "has_immediate_step": true,
+        "priority_ordering": true,
+        "has_source_citation": true,
+        "remediation_keywords": true,
+        "anomaly_count": true,
+        "scores_valid": true,
+        "processing_time": false
+      },
+      "scenario_pass": 14,
+      "scenario_total": 16,
+      "processing_time": 79.4
+    }
+  ]
+}

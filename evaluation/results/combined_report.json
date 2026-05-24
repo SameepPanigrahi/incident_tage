@@ -1,0 +1,24 @@
+{
+  "Level 1: Retrieval": {
+    "hit_rate": 1.0,
+    "avg_precision": 0.78,
+    "mrr": 0.95,
+    "status": "\u2705"
+  },
+  "Level 2: Agents": {
+    "pass_rate": 1.0,
+    "passed": 12,
+    "total": 12,
+    "status": "\u2705"
+  },
+  "Level 3: End-to-End": {
+    "pass_rate": 0.917,
+    "passed": 44,
+    "total": 48,
+    "status": "\u2705"
+  },
+  "metadata": {
+    "total_time_seconds": 1411.8,
+    "timestamp": "2026-05-24T15:52:55.325854"
+  }
+}

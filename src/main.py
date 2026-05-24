@@ -15,6 +15,7 @@ from src.agents.graph import build_graph
 from src.rag.ingestion import IncidentDataIngester
 from src.security.pii_masking import PIIMasker
 from src.security.audit_logger import AuditLogger
+from langchain.callbacks.manager import tracing_v2_enabled
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +25,24 @@ _retriever = None
 _vector_store = None
 _pii_masker = PIIMasker()
 _audit = AuditLogger()
+
+
+
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
+    handlers=[
+        logging.StreamHandler(),                              # Console
+        logging.FileHandler("app.log", encoding="utf-8"),     # File
+    ],
+)
+
+# import os
+# print("LangSmith tracing:", os.getenv("LANGCHAIN_TRACING_V2"))
+# print("LangSmith API key:", os.getenv("LANGCHAIN_API_KEY"))
+# print("LangSmith project:", os.getenv("LANGCHAIN_PROJECT"))
 
 
 @asynccontextmanager
@@ -100,7 +119,10 @@ async def analyze_incident(request: IncidentAnalysisRequest):
 
     start = time.time()
     try:
-        final_state = _graph.invoke(initial_state)
+        # final_state = _graph.invoke(initial_state)
+        with tracing_v2_enabled():
+            final_state = _graph.invoke(initial_state)
+
     except Exception as exc:
         logger.exception("Pipeline failed for %s", request.incident_id)
         raise HTTPException(status_code=500, detail=str(exc))

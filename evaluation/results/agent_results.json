@@ -1,0 +1,124 @@
+{
+  "summary": {
+    "total_pass": 12,
+    "total_tests": 12,
+    "overall_rate": 1.0,
+    "timestamp": "2026-05-24T15:48:12.583567"
+  },
+  "details": [
+    {
+      "name": "Auth Service Outage",
+      "agent": "log_parser",
+      "service_f1": 1.0,
+      "timestamp_correct": true,
+      "pattern_count": 5,
+      "entry_count": 37,
+      "pass": true
+    },
+    {
+      "name": "Payment Latency Spike",
+      "agent": "log_parser",
+      "service_f1": 1.0,
+      "timestamp_correct": true,
+      "pattern_count": 7,
+      "entry_count": 38,
+      "pass": true
+    },
+    {
+      "name": "API Gateway Timeout",
+      "agent": "log_parser",
+      "service_f1": 1.0,
+      "timestamp_correct": true,
+      "pattern_count": 4,
+      "entry_count": 31,
+      "pass": true
+    },
+    {
+      "name": "Auth \u2192 DB Pool Exhaustion",
+      "agent": "root_cause",
+      "category_match": true,
+      "confidence_match": true,
+      "evidence_count": 4,
+      "reasoning_length": 372,
+      "keyword_coverage": 1.0,
+      "pass": true
+    },
+    {
+      "name": "Payment \u2192 Memory Leak",
+      "agent": "root_cause",
+      "category_match": true,
+      "confidence_match": true,
+      "evidence_count": 3,
+      "reasoning_length": 340,
+      "keyword_coverage": 1.0,
+      "pass": true
+    },
+    {
+      "name": "API Gateway \u2192 Timeout Cascade",
+      "agent": "root_cause",
+      "category_match": true,
+      "confidence_match": true,
+      "evidence_count": 4,
+      "reasoning_length": 319,
+      "keyword_coverage": 0.67,
+      "pass": true
+    },
+    {
+      "name": "Auth Cascading Failure",
+      "agent": "correlation",
+      "anomaly_count": 5,
+      "service_coverage": 1.0,
+      "scores_valid": true,
+      "has_descriptions": true,
+      "pass": true
+    },
+    {
+      "name": "Payment Pod Cycling",
+      "agent": "correlation",
+      "anomaly_count": 4,
+      "service_coverage": 1.0,
+      "scores_valid": true,
+      "has_descriptions": true,
+      "pass": true
+    },
+    {
+      "name": "API Timeout Chain",
+      "agent": "correlation",
+      "anomaly_count": 4,
+      "service_coverage": 1.0,
+      "scores_valid": true,
+      "has_descriptions": true,
+      "pass": true
+    },
+    {
+      "name": "DB Pool Fix",
+      "agent": "remediation",
+      "step_count": 7,
+      "priority_ok": true,
+      "ordering_ok": true,
+      "source_cited": true,
+      "keyword_coverage": 1.0,
+      "pass": true
+    },
+    {
+      "name": "Memory Leak Fix",
+      "agent": "remediation",
+      "step_count": 7,
+      "priority_ok": true,
+      "ordering_ok": true,
+      "source_cited": true,
+      "keyword_coverage": 0.67,
+      "pass": true
+    },
+    {
+      "name": "Timeout Cascade Fix",
+      "agent": "remediation",
+      "step_count": 6,
+      "priority_ok": true,
+      "ordering_ok": true,
+      "source_cited": true,
+      "keyword_coverage": 0.67,
+      "pass": true
+    }
+  ]
+}

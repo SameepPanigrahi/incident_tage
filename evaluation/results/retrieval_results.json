@@ -1,0 +1,200 @@
+{
+  "summary": {
+    "total_queries": 10,
+    "hits": 10,
+    "hit_rate": 1.0,
+    "avg_precision": 0.78,
+    "mrr": 0.95,
+    "source_coverage": 0.857,
+    "sources_found": [
+      "database_troubleshooting.md",
+      "deployment_rollback_sop.md",
+      "incident_001.json",
+      "incident_002.json",
+      "memory_leak_diagnosis.md",
+      "timeout_cascade_prevention.md"
+    ],
+    "sources_missed": [
+      "incident_003.json"
+    ],
+    "timestamp": "2026-05-24T15:29:29.144015"
+  },
+  "details": [
+    {
+      "id": "R-001",
+      "query": "database connection pool exhaustion fix procedures",
+      "expected_sources": [
+        "database_troubleshooting.md",
+        "incident_001.json"
+      ],
+      "retrieved_sources": [
+        "database_troubleshooting.md",
+        "auth_service_outage.log",
+        "incident_001.json",
+        "auth_service_outage.log",
+        "database_troubleshooting.md"
+      ],
+      "hit": true,
+      "precision": 0.6,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "id": "R-002",
+      "query": "ERR-DB-POOL-001 connection leak error handling",
+      "expected_sources": [
+        "database_troubleshooting.md",
+        "incident_001.json"
+      ],
+      "retrieved_sources": [
+        "incident_001.json",
+        "auth_service_outage.log",
+        "database_troubleshooting.md",
+        "auth_service_outage.log",
+        "database_troubleshooting.md"
+      ],
+      "hit": true,
+      "precision": 0.6,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "id": "R-003",
+      "query": "kill idle database connections pg_terminate_backend",
+      "expected_sources": [
+        "database_troubleshooting.md"
+      ],
+      "retrieved_sources": [
+        "database_troubleshooting.md",
+        "database_troubleshooting.md",
+        "database_troubleshooting.md",
+        "database_troubleshooting.md",
+        "database_troubleshooting.md"
+      ],
+      "hit": true,
+      "precision": 1.0,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "id": "R-004",
+      "query": "Java OutOfMemoryError heap space memory leak",
+      "expected_sources": [
+        "memory_leak_diagnosis.md",
+        "incident_002.json"
+      ],
+      "retrieved_sources": [
+        "memory_leak_diagnosis.md",
+        "incident_002.json",
+        "memory_leak_diagnosis.md",
+        "incident_002.json",
+        "memory_leak_diagnosis.md"
+      ],
+      "hit": true,
+      "precision": 1.0,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "id": "R-005",
+      "query": "unbounded cache TransactionCache OOM kill remediation",
+      "expected_sources": [
+        "memory_leak_diagnosis.md",
+        "incident_002.json"
+      ],
+      "retrieved_sources": [
+        "incident_002.json",
+        "incident_002.json",
+        "incident_002.json",
+        "incident_002.json",
+        "payment_latency_spike.log"
+      ],
+      "hit": true,
+      "precision": 0.8,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "id": "R-006",
+      "query": "cascading timeout circuit breaker thread pool exhaustion",
+      "expected_sources": [
+        "timeout_cascade_prevention.md",
+        "incident_003.json"
+      ],
+      "retrieved_sources": [
+        "timeout_cascade_prevention.md",
+        "database_troubleshooting.md",
+        "timeout_cascade_prevention.md",
+        "auth_service_outage.log",
+        "auth_service_outage.log"
+      ],
+      "hit": true,
+      "precision": 0.4,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "id": "R-007",
+      "query": "missing database index full table scan slow query",
+      "expected_sources": [
+        "database_troubleshooting.md",
+        "incident_003.json"
+      ],
+      "retrieved_sources": [
+        "database_troubleshooting.md",
+        "database_troubleshooting.md",
+        "api_gateway_timeout.log",
+        "incident_003.json",
+        "incident_003.json"
+      ],
+      "hit": true,
+      "precision": 0.8,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "id": "R-008",
+      "query": "kubernetes rollback deployment kubectl rollout undo",
+      "expected_sources": [
+        "deployment_rollback_sop.md"
+      ],
+      "retrieved_sources": [
+        "memory_leak_diagnosis.md",
+        "deployment_rollback_sop.md",
+        "deployment_rollback_sop.md",
+        "memory_leak_diagnosis.md",
+        "deployment_rollback_sop.md"
+      ],
+      "hit": true,
+      "precision": 0.6,
+      "reciprocal_rank": 0.5
+    },
+    {
+      "id": "R-009",
+      "query": "circuit breaker configuration timeout tuning resilience4j",
+      "expected_sources": [
+        "timeout_cascade_prevention.md"
+      ],
+      "retrieved_sources": [
+        "timeout_cascade_prevention.md",
+        "timeout_cascade_prevention.md",
+        "timeout_cascade_prevention.md",
+        "timeout_cascade_prevention.md",
+        "timeout_cascade_prevention.md"
+      ],
+      "hit": true,
+      "precision": 1.0,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "id": "R-010",
+      "query": "GC pause stop the world heap dump memory profiling",
+      "expected_sources": [
+        "memory_leak_diagnosis.md"
+      ],
+      "retrieved_sources": [
+        "memory_leak_diagnosis.md",
+        "memory_leak_diagnosis.md",
+        "memory_leak_diagnosis.md",
+        "memory_leak_diagnosis.md",
+        "memory_leak_diagnosis.md"
+      ],
+      "hit": true,
+      "precision": 1.0,
+      "reciprocal_rank": 1.0
+    }
+  ]
+}

@@ -210,7 +210,7 @@ class IncidentDataIngester:
         counts = {
             "runbooks": self.ingest_runbooks(data_dir / "runbooks"),
             "past_incidents": self.ingest_past_incidents(data_dir / "past_incidents"),
-            "logs": self.ingest_logs(data_dir / "incident_logs"),
+            # "logs": self.ingest_logs(data_dir / "incident_logs"),
         }
         logger.info("Ingestion complete: %s", counts)
         return counts
