@@ -373,7 +373,7 @@ All metrics are logged to **LangSmith as scored feedback** and saved locally to 
 | Orchestration | LangGraph | LangChain Agents / CrewAI | State machines with conditional routing, explicit control flow |
 | Vector DB | ChromaDB (persistent) | Pinecone / Weaviate | Zero-config MVP, metadata filtering. Pinecone for scale later |
 | LLM | GPT-4o-mini (temp=0.1) | GPT-4o / Claude 3.5 | 90% quality at 10% cost. Low temp for consistent JSON |
-| Chunking | Semantic + Log-aware | Fixed-size / Recursive | Preserves document structure, respects timestamp boundaries |
+| Chunking | Bounday aware + Log-aware | semantic/Fixed-size / Recursive | Preserves document structure, respects timestamp boundaries |
 | Log Ingestion | NOT ingested to ChromaDB | Ingest all 3 types | No agent retrieves logs from RAG. Only ingest what's used |
 | Evaluation | Custom deterministic | RAGAS / LLM-as-judge | Free, instant, CI/CD friendly, 25+ domain-specific metrics |
 | Pipeline | Sequential agents | Parallel / async | Data dependencies require sequence. Parallel is future work |
